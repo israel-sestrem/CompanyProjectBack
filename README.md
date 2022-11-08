@@ -10,7 +10,7 @@ Rotas:
     - localhost:8080/addresses/{id}        (GET)    - trazer address
     - localhost:8080/addresses/client/{id} (GET)    - trazer addresses por id do cliente
     - localhost:8080/addresses             (GET)    - trazer todos os addresses
-
+    -
     - Contacts
     - localhost:8080/contacts              (POST)   - salvar contact
     - localhost:8080/contacts/{id}         (PUT)    - atualizar contact
