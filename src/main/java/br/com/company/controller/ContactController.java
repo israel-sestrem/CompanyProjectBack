@@ -31,6 +31,15 @@ public class ContactController {
         throw new ContactNotFoundException(id);
     }
 
+    @GetMapping("contacts/client/{id}")
+    ResponseEntity<List<ContactEntity>> findAllByClientId(@PathVariable Integer id){
+        List<ContactEntity> contacts = contactService.findAllByClientId(id);
+        if(!contacts.isEmpty()){
+            return new ResponseEntity<>(contacts, HttpStatus.OK);
+        }
+        throw new ContactNotFoundException(id);
+    }
+
     @PostMapping("/contacts")
     ResponseEntity<ContactEntity> save(@RequestBody ContactEntity contactEntity){
         return new ResponseEntity<>(contactService.save(contactEntity),HttpStatus.CREATED);

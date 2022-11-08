@@ -22,6 +22,10 @@ public class ContactService {
         return contactRepository.findById(id);
     }
 
+    public List<ContactEntity> findAllByClientId(Integer id){
+        return contactRepository.findAllByClientId(id);
+    }
+
     public ContactEntity save(ContactEntity contact){
         return contactRepository.save(contact);
     }

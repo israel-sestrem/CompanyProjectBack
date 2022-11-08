@@ -13,11 +13,21 @@ public class ContactEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private ClientEntity client;
     @Enumerated(EnumType.STRING)
     private TypePhone type;
     private String phone;
 
+    public ContactEntity(Integer id, ClientEntity client, TypePhone type, String phone) {
+        this.id = id;
+        this.client = client;
+        this.type = type;
+        this.phone = phone;
+    }
+
+    public ContactEntity(){
+
+    }
 }

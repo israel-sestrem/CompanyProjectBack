@@ -31,6 +31,15 @@ public class AddressController {
         throw new AddressNotFoundException(id);
     }
 
+    @GetMapping("/addresses/client/{id}")
+    ResponseEntity<List<AddressEntity>> findAllByClientId(@PathVariable Integer id){
+        List<AddressEntity> addresses = addressService.findAllByClientId(id);
+        if(!addresses.isEmpty()){
+            return new ResponseEntity<>(addresses, HttpStatus.OK);
+        }
+        throw new AddressNotFoundException(id);
+    }
+
     @PostMapping("/addresses")
     ResponseEntity<AddressEntity> save(@RequestBody AddressEntity address){
         return new ResponseEntity<>(addressService.save(address), HttpStatus.CREATED);

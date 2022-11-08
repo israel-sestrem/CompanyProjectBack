@@ -22,6 +22,10 @@ public class AddressService {
         return addressRepository.findById(id);
     }
 
+    public List<AddressEntity> findAllByClientId(Integer id){
+        return addressRepository.findAllByClientId(id);
+    }
+
     public AddressEntity save(AddressEntity address){
         return addressRepository.save(address);
     }
