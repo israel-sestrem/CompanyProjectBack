@@ -3,6 +3,7 @@
 Para rodar: dar um mvn clean package e debugar o CompanyApplication
 
 Rotas: 
+
     - Addresses
     - localhost:8080/addresses             (POST)   - salvar address
     - localhost:8080/addresses/{id}        (PUT)    - atualizar address
