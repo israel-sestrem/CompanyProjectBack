@@ -22,7 +22,7 @@ public class ContactController {
         return new ResponseEntity<>(contactService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("contacts/{id}")
+    @GetMapping("/contacts/{id}")
     ResponseEntity<ContactEntity> findById(@PathVariable Integer id){
         Optional<ContactEntity> contact = contactService.findById(id);
         if(contact.isPresent()){
@@ -31,7 +31,7 @@ public class ContactController {
         throw new ContactNotFoundException(id);
     }
 
-    @GetMapping("contacts/client/{id}")
+    @GetMapping("/contacts/client/{id}")
     ResponseEntity<List<ContactEntity>> findAllByClientId(@PathVariable Integer id){
         List<ContactEntity> contacts = contactService.findAllByClientId(id);
         if(!contacts.isEmpty()){
@@ -54,7 +54,7 @@ public class ContactController {
         throw new ContactNotFoundException(id);
     }
 
-    @DeleteMapping("contacts/{id}")
+    @DeleteMapping("/contacts/{id}")
     ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
         if(contactService.existsById(id)){
             contactService.deleteById(id);
