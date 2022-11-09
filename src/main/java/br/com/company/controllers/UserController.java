@@ -2,6 +2,8 @@ package br.com.company.controllers;
 
 import br.com.company.controllers.exceptions.UserNotFoundException;
 import br.com.company.entities.UserEntity;
+import br.com.company.interfaces.RecUserLoginInterface;
+import br.com.company.interfaces.SignupInterface;
 import br.com.company.interfaces.UserLoginInterface;
 import br.com.company.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,14 +47,15 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<String> save(@RequestBody UserEntity user){
-        user.setPassword(userService.encode(user.getPassword()));
-        return new ResponseEntity<>(userService.save(user).getId().toString(), HttpStatus.CREATED);
+    ResponseEntity<String> save(@RequestBody SignupInterface userClient){
+        userClient.setPassword(userService.encode(userClient.getPassword()));
+        return new ResponseEntity<>(userService.saveWithClient(userClient).getId().toString(), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
-    ResponseEntity<Boolean> validateUser(@RequestBody UserLoginInterface request){
-        return new ResponseEntity<>(userService.validateUser(request.getEmail(), request.getPassword()), HttpStatus.OK);
+    ResponseEntity<RecUserLoginInterface> validateUser(@RequestBody UserLoginInterface request){
+        RecUserLoginInterface userLogged = userService.validateUser(request.getEmail(), request.getPassword());
+        return new ResponseEntity<>(userLogged, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")

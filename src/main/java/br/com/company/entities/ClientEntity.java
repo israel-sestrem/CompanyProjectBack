@@ -21,6 +21,11 @@ public class ClientEntity {
         this.email = email;
     }
 
+    public ClientEntity(String name, String email) {
+        this.name = name;
+        this.email = email;
+    }
+
     public ClientEntity(){
 
     }

@@ -1,6 +1,9 @@
 package br.com.company.services;
 
+import br.com.company.entities.ClientEntity;
 import br.com.company.entities.UserEntity;
+import br.com.company.interfaces.RecUserLoginInterface;
+import br.com.company.interfaces.SignupInterface;
 import br.com.company.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,9 @@ public class UserService {
     @Autowired
     UserRepository userRepository;
 
+    @Autowired
+    ClientService clientService;
+
     public List<UserEntity> findAll(){
         return userRepository.findAll();
     }
@@ -30,6 +36,29 @@ public class UserService {
 
     public UserEntity save(UserEntity user){
         return userRepository.save(user);
+    }
+
+    public UserEntity saveWithClient(SignupInterface userClient){
+        UserEntity user;
+        if(userClient.getClientEmail() != null && userClient.getClientName() != null) {
+            ClientEntity client = new ClientEntity(userClient.getClientName(), userClient.getClientEmail());
+            user = this.mapToUserEntity(userClient, clientService.save(client));
+        } else {
+            user = this.mapToUserEntity(userClient, null);
+        }
+        return this.save(user);
+    }
+
+    private UserEntity mapToUserEntity(SignupInterface userClient, ClientEntity client) {
+
+        UserEntity user = new UserEntity();
+        user.setName(userClient.getName());
+        user.setPassword(userClient.getPassword());
+        user.setEmail(userClient.getEmail());
+        if(client != null)
+            user.setClientId(client.getId());
+
+        return user;
     }
 
     public Boolean existsById(Integer id){
@@ -68,18 +97,22 @@ public class UserService {
         return new String(Base64.getDecoder().decode(value));
     }
 
-    public Boolean validateUser(String email, String password){
+    public RecUserLoginInterface validateUser(String email, String password){
+        RecUserLoginInterface userLogged = new RecUserLoginInterface();
         Optional<UserEntity> user = this.findByEmail(email);
-        return user.isPresent() && this.decode(user.get().getPassword()).equals(password);
+
+        if(user.isPresent()) {
+            userLogged.setIsValid(this.decode(user.get().getPassword()).equals(password));
+            userLogged.setId(user.get().getId().toString());
+        }
+
+        return userLogged;
     }
 
     public List<UserEntity> decodeAll(List<UserEntity> users){
         return users
                 .stream()
-                .map(user -> {
-                    user.setPassword(this.decode(user.getPassword()));
-                    return user;
-                })
+                .peek(user -> user.setPassword(this.decode(user.getPassword())))
                 .collect(Collectors.toList());
     }
 
