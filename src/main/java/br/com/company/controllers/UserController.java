@@ -12,18 +12,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
+@RequestMapping(value = "/users")
 public class UserController {
 
     @Autowired
     UserService userService;
 
-    @GetMapping("/users")
+    @GetMapping
     ResponseEntity<List<UserEntity>> findAll(){
         return new ResponseEntity<>(userService.decodeAll(userService.findAll()), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<UserEntity> findById(@PathVariable Integer id){
         Optional<UserEntity> user = userService.findById(id);
         if(user.isPresent()){
@@ -33,7 +35,7 @@ public class UserController {
         throw new UserNotFoundException(id);
     }
 
-    @GetMapping("/users/client/{id}")
+    @GetMapping("/client/{id}")
     ResponseEntity<List<UserEntity>> findAllByClientId(@PathVariable Integer id){
         List<UserEntity> users = userService.decodeAll(userService.findAllByClientId(id));
         if(!users.isEmpty()){
@@ -42,18 +44,19 @@ public class UserController {
         throw new UserNotFoundException(id);
     }
 
-    @PostMapping("/users")
-    ResponseEntity<UserEntity> save(@RequestBody UserEntity user){
+    @PostMapping
+    ResponseEntity<Boolean> save(@RequestBody UserEntity user){
         user.setPassword(userService.encode(user.getPassword()));
-        return new ResponseEntity<>(userService.save(user), HttpStatus.CREATED);
+        userService.save(user);
+        return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
-    @PostMapping("/users/login")
+    @PostMapping("/login")
     ResponseEntity<Boolean> validateUser(@RequestBody UserLoginInterface request){
         return new ResponseEntity<>(userService.validateUser(request.getEmail(), request.getPassword()), HttpStatus.OK);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<UserEntity> update(@RequestBody UserEntity newUser, @PathVariable Integer id){
         Optional<UserEntity> userEntity = userService.findById(id);
         if(userEntity.isPresent()){
@@ -62,7 +65,7 @@ public class UserController {
         throw new UserNotFoundException(id);
     }
 
-    @DeleteMapping("/users/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
         if(userService.existsById(id)){
             userService.deleteById(id);

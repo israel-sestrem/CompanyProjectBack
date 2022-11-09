@@ -11,18 +11,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
+@RequestMapping(value = "/addresses")
 public class AddressController {
 
     @Autowired
     AddressService addressService;
 
-    @GetMapping("/addresses")
+    @GetMapping
     ResponseEntity<List<AddressEntity>> findAll(){
         return new ResponseEntity<>(addressService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/addresses/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<AddressEntity> findById(@PathVariable Integer id){
         Optional<AddressEntity> address = addressService.findById(id);
         if(address.isPresent()){
@@ -31,7 +33,7 @@ public class AddressController {
         throw new AddressNotFoundException(id);
     }
 
-    @GetMapping("/addresses/client/{id}")
+    @GetMapping("/client/{id}")
     ResponseEntity<List<AddressEntity>> findAllByClientId(@PathVariable Integer id){
         List<AddressEntity> addresses = addressService.findAllByClientId(id);
         if(!addresses.isEmpty()){
@@ -40,12 +42,13 @@ public class AddressController {
         throw new AddressNotFoundException(id);
     }
 
-    @PostMapping("/addresses")
-    ResponseEntity<AddressEntity> save(@RequestBody AddressEntity address){
-        return new ResponseEntity<>(addressService.save(address), HttpStatus.CREATED);
+    @PostMapping
+    ResponseEntity<Boolean> save(@RequestBody AddressEntity address){
+        addressService.save(address);
+        return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
-    @PutMapping("/addresses/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<AddressEntity> update(@RequestBody AddressEntity newAddress, @PathVariable Integer id){
         Optional<AddressEntity> addressEntity = addressService.findById(id);
         if(addressEntity.isPresent()){
@@ -54,7 +57,7 @@ public class AddressController {
         throw new AddressNotFoundException(id);
     }
 
-    @DeleteMapping("/addresses/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
         if(addressService.existsById(id)){
             addressService.deleteById(id);

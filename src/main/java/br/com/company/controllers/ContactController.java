@@ -11,18 +11,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
+@RequestMapping(value = "/contacts")
 public class ContactController {
 
     @Autowired
     ContactService contactService;
 
-    @GetMapping("/contacts")
+    @GetMapping
     ResponseEntity<List<ContactEntity>> findAll(){
         return new ResponseEntity<>(contactService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/contacts/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<ContactEntity> findById(@PathVariable Integer id){
         Optional<ContactEntity> contact = contactService.findById(id);
         if(contact.isPresent()){
@@ -31,7 +33,7 @@ public class ContactController {
         throw new ContactNotFoundException(id);
     }
 
-    @GetMapping("/contacts/client/{id}")
+    @GetMapping("/client/{id}")
     ResponseEntity<List<ContactEntity>> findAllByClientId(@PathVariable Integer id){
         List<ContactEntity> contacts = contactService.findAllByClientId(id);
         if(!contacts.isEmpty()){
@@ -40,12 +42,13 @@ public class ContactController {
         throw new ContactNotFoundException(id);
     }
 
-    @PostMapping("/contacts")
-    ResponseEntity<ContactEntity> save(@RequestBody ContactEntity contactEntity){
-        return new ResponseEntity<>(contactService.save(contactEntity),HttpStatus.CREATED);
+    @PostMapping
+    ResponseEntity<Boolean> save(@RequestBody ContactEntity contactEntity){
+        contactService.save(contactEntity);
+        return new ResponseEntity<>(true,HttpStatus.CREATED);
     }
 
-    @PutMapping("/contacts/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<ContactEntity> update(@RequestBody ContactEntity newContact, @PathVariable Integer id){
         Optional<ContactEntity> contactEntity = contactService.findById(id);
         if(contactEntity.isPresent()){
@@ -54,7 +57,7 @@ public class ContactController {
         throw new ContactNotFoundException(id);
     }
 
-    @DeleteMapping("/contacts/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
         if(contactService.existsById(id)){
             contactService.deleteById(id);

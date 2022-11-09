@@ -11,18 +11,20 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin("*")
 @RestController
+@RequestMapping(value = "/clients")
 public class ClientController {
 
     @Autowired
     ClientService clientService;
 
-    @GetMapping("/clients")
+    @GetMapping
     ResponseEntity<List<ClientEntity>> findAll(){
         return new ResponseEntity<>(clientService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/clients/{id}")
+    @GetMapping("/{id}")
     ResponseEntity<ClientEntity> findById(@PathVariable Integer id){
         Optional<ClientEntity> client = clientService.findById(id);
         if(client.isPresent()){
@@ -31,12 +33,13 @@ public class ClientController {
         throw new ClientNotFoundException(id);
     }
 
-    @PostMapping(value = "/clients")
-    ResponseEntity<ClientEntity> save(@RequestBody ClientEntity client){
-        return new ResponseEntity<>(clientService.save(client), HttpStatus.CREATED);
+    @PostMapping
+    ResponseEntity<Boolean> save(@RequestBody ClientEntity client){
+        clientService.save(client);
+        return new ResponseEntity<>(true, HttpStatus.CREATED);
     }
 
-    @PutMapping("/clients/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<ClientEntity> update(@RequestBody ClientEntity newClient, @PathVariable Integer id){
         Optional<ClientEntity> clientEntity = clientService.findById(id);
         if(clientEntity.isPresent()){
@@ -45,7 +48,7 @@ public class ClientController {
         throw new ClientNotFoundException(id);
     }
 
-    @DeleteMapping("/clients/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
         if(clientService.existsById(id)){
             clientService.deleteById(id);
