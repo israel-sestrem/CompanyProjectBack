@@ -45,10 +45,9 @@ public class UserController {
     }
 
     @PostMapping
-    ResponseEntity<Boolean> save(@RequestBody UserEntity user){
+    ResponseEntity<String> save(@RequestBody UserEntity user){
         user.setPassword(userService.encode(user.getPassword()));
-        userService.save(user);
-        return new ResponseEntity<>(true, HttpStatus.CREATED);
+        return new ResponseEntity<>(userService.save(user).getId().toString(), HttpStatus.CREATED);
     }
 
     @PostMapping("/login")
