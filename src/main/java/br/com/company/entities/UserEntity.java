@@ -12,7 +12,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "current_client_id", nullable = false)
+    @Column(name = "current_client_id")
     private Integer clientId;
     private String name;
     private String password;
