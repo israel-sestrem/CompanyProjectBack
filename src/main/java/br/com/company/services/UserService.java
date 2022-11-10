@@ -7,6 +7,7 @@ import br.com.company.interfaces.SignupInterface;
 import br.com.company.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Base64;
 import java.util.List;
@@ -22,22 +23,27 @@ public class UserService {
     @Autowired
     ClientService clientService;
 
+    @Transactional(readOnly = true)
     public List<UserEntity> findAll(){
         return userRepository.findAll();
     }
 
+    @Transactional(readOnly = true)
     public Optional<UserEntity> findById(Integer id){
         return userRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
     public List<UserEntity> findAllByClientId(Integer id){
         return userRepository.findAllByClientId(id);
     }
 
+    @Transactional
     public UserEntity save(UserEntity user){
         return userRepository.save(user);
     }
 
+    @Transactional
     public UserEntity saveWithClient(SignupInterface userClient){
         UserEntity user;
         if(userClient.getClientEmail() != null && userClient.getClientName() != null) {
@@ -61,14 +67,17 @@ public class UserService {
         return user;
     }
 
+    @Transactional(readOnly = true)
     public Boolean existsById(Integer id){
         return userRepository.existsById(id);
     }
 
+    @Transactional
     public void deleteById(Integer id){
         userRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     public Optional<UserEntity> findByEmail(String email){
         return userRepository.findByEmail(email);
     }

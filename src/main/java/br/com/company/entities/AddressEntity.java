@@ -15,6 +15,7 @@ public class AddressEntity {
     @ManyToOne
     @JoinColumn(name = "client_id", referencedColumnName = "id", nullable = false)
     private ClientEntity client;
+    private String branch;
     private String cnpj;
     private String address;
     private Integer number;
@@ -25,9 +26,10 @@ public class AddressEntity {
     private String state;
     private String city;
 
-    public AddressEntity(Integer id, ClientEntity client, String cnpj, String address, Integer number, String complement, String neighborhood, String zipCode, String state, String city) {
+    public AddressEntity(Integer id, ClientEntity client, String branch, String cnpj, String address, Integer number, String complement, String neighborhood, String zipCode, String state, String city) {
         this.id = id;
         this.client = client;
+        this.branch = branch;
         this.cnpj = cnpj;
         this.address = address;
         this.number = number;
