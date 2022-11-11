@@ -34,4 +34,5 @@ Rotas:
     - localhost:8080/users/{id}            (DELETE) - deletar user
     - localhost:8080/users/{id}            (GET)    - trazer user
     - localhost:8080/users/client/{id}     (GET)    - trazer users por id do cliente
+    - localhost:8080/users/exists/{id}     (GET)    - trazer se usuario existe ou não
     - localhost:8080/users                 (GET)    - trazer todos os users

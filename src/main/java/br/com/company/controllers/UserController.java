@@ -37,6 +37,11 @@ public class UserController {
         throw new UserNotFoundException(id);
     }
 
+    @GetMapping("/exists/{id}")
+    ResponseEntity<Boolean> existsById(@PathVariable Integer id){
+        return new ResponseEntity<>(userService.existsById(id), HttpStatus.OK);
+    }
+
     @GetMapping("/client/{id}")
     ResponseEntity<List<UserEntity>> findAllByClientId(@PathVariable Integer id){
         List<UserEntity> users = userService.decodeAll(userService.findAllByClientId(id));
