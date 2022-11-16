@@ -2,6 +2,11 @@
 
 Para rodar: dar um mvn clean package e debugar o CompanyApplication
 
+Tecnologias utilizadas:
+
+    - Java com Spring
+    - Database : MySQL
+
 Rotas: 
 
     - Addresses
