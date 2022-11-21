@@ -46,9 +46,14 @@ public class UserService {
     @Transactional
     public UserEntity saveWithClient(SignupInterface userClient){
         UserEntity user;
-        if(userClient.getClientEmail() != null && userClient.getClientName() != null) {
-            ClientEntity client = new ClientEntity(userClient.getClientName(), userClient.getClientEmail());
-            user = this.mapToUserEntity(userClient, clientService.save(client));
+        if(userClient.getClientName() != null){
+            if(userClient.getClientEmail() != null) {
+                ClientEntity client = new ClientEntity(userClient.getClientName(), userClient.getClientEmail());
+                user = this.mapToUserEntity(userClient, clientService.save(client));
+            } else {
+                ClientEntity client = clientService.findByName(userClient.getName());
+                user = this.mapToUserEntity(userClient, client);
+            }
         } else {
             user = this.mapToUserEntity(userClient, null);
         }

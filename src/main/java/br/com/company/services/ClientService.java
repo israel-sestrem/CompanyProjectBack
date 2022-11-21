@@ -25,6 +25,11 @@ public class ClientService {
         return clientRepository.findById(id);
     }
 
+    @Transactional(readOnly = true)
+    public ClientEntity findByName(String name){
+        return clientRepository.findByName(name);
+    }
+
     @Transactional
     public ClientEntity save(ClientEntity client){
         return clientRepository.save(client);
