@@ -49,19 +49,20 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<AddressEntity> update(@RequestBody AddressEntity newAddress, @PathVariable Integer id){
+    ResponseEntity<Boolean> update(@RequestBody AddressEntity newAddress, @PathVariable Integer id){
         Optional<AddressEntity> addressEntity = addressService.findById(id);
         if(addressEntity.isPresent()){
-            return new ResponseEntity<>(addressService.save(addressService.checkNullFields(addressEntity.get(), newAddress)), HttpStatus.OK);
+            addressService.save(addressService.checkNullFields(addressEntity.get(), newAddress));
+            return new ResponseEntity<>(true, HttpStatus.OK);
         }
         throw new AddressNotFoundException(id);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
+    ResponseEntity<Boolean> delete(@PathVariable Integer id){
         if(addressService.existsById(id)){
             addressService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(true,HttpStatus.OK);
         }
         throw new AddressNotFoundException(id);
     }

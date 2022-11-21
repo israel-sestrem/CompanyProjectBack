@@ -64,19 +64,20 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<UserEntity> update(@RequestBody UserEntity newUser, @PathVariable Integer id){
+    ResponseEntity<Boolean> update(@RequestBody UserEntity newUser, @PathVariable Integer id){
         Optional<UserEntity> userEntity = userService.findById(id);
         if(userEntity.isPresent()){
-            return new ResponseEntity<>(userService.save(userService.checkNullFields(userEntity.get(), newUser)), HttpStatus.OK);
+            userService.save(userService.checkNullFields(userEntity.get(), newUser));
+            return new ResponseEntity<>(true, HttpStatus.OK);
         }
         throw new UserNotFoundException(id);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
+    ResponseEntity<Boolean> delete(@PathVariable Integer id){
         if(userService.existsById(id)){
             userService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(true,HttpStatus.OK);
         }
         throw new UserNotFoundException(id);
     }

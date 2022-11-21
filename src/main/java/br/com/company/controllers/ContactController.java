@@ -49,19 +49,20 @@ public class ContactController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<ContactEntity> update(@RequestBody ContactEntity newContact, @PathVariable Integer id){
+    ResponseEntity<Boolean> update(@RequestBody ContactEntity newContact, @PathVariable Integer id){
         Optional<ContactEntity> contactEntity = contactService.findById(id);
         if(contactEntity.isPresent()){
-            return new ResponseEntity<>(contactService.save(contactService.checkNullFields(contactEntity.get(), newContact)),HttpStatus.OK);
+            contactService.save(contactService.checkNullFields(contactEntity.get(), newContact));
+            return new ResponseEntity<>(true,HttpStatus.OK);
         }
         throw new ContactNotFoundException(id);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
+    ResponseEntity<Boolean> delete(@PathVariable Integer id){
         if(contactService.existsById(id)){
             contactService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(true,HttpStatus.OK);
         }
         throw new ContactNotFoundException(id);
     }

@@ -40,19 +40,20 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<ClientEntity> update(@RequestBody ClientEntity newClient, @PathVariable Integer id){
+    ResponseEntity<Boolean> update(@RequestBody ClientEntity newClient, @PathVariable Integer id){
         Optional<ClientEntity> clientEntity = clientService.findById(id);
         if(clientEntity.isPresent()){
-            return new ResponseEntity<>(clientService.save(clientService.checkNullFields(clientEntity.get(), newClient)),HttpStatus.OK);
+            clientService.save(clientService.checkNullFields(clientEntity.get(), newClient));
+            return new ResponseEntity<>(true,HttpStatus.OK);
         }
         throw new ClientNotFoundException(id);
     }
 
     @DeleteMapping("/{id}")
-    ResponseEntity<HttpStatus> delete(@PathVariable Integer id){
+    ResponseEntity<Boolean> delete(@PathVariable Integer id){
         if(clientService.existsById(id)){
             clientService.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return new ResponseEntity<>(true,HttpStatus.OK);
         }
         throw new ClientNotFoundException(id);
     }
