@@ -34,6 +34,7 @@ Rotas:
     -
     - Faq
     - localhost:8080/faq                   (POST)   - salvar faq
+    - localhost:8080/faq/all               (POST)   - salvar faqs
     - localhost:8080/faq/{id}              (PUT)    - atualizar faq
     - localhost:8080/faq/{id}              (DELETE) - deletar faq
     - localhost:8080/faq/{id}              (GET)    - trazer faq

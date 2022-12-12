@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,6 +41,13 @@ public class FaqController {
     @PostMapping
     ResponseEntity<String> save(@RequestBody FaqEntity faq){
         return new ResponseEntity<>(faqService.save(faq).getId().toString(), HttpStatus.CREATED);
+    }
+
+    @PostMapping("/all")
+    ResponseEntity<List<String>> saveAll(@RequestBody List<FaqEntity> faqs){
+        List<String> ids = new ArrayList<>();
+        faqs.forEach(faq -> ids.add(faqService.save(faq).getId().toString()));
+        return new ResponseEntity<>(ids, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
