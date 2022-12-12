@@ -33,6 +33,9 @@ Rotas:
     - localhost:8080/clients               (GET)    - trazer todos os clients
     -
     - Faq
+    - Obs: do jeito que está rodando o projeto agora, toda vez que é iniciado uma nova sessão, são apagados
+    - todos os dados do banco e recriado tudo novamente. Então, para fazer testes da faq, podemos fazer
+    - a carga de perguntas pelo postman através da api.
     - localhost:8080/faq                   (POST)   - salvar faq
     - localhost:8080/faq/all               (POST)   - salvar faqs
     - localhost:8080/faq/{id}              (PUT)    - atualizar faq
