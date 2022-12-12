@@ -51,7 +51,7 @@ public class UserService {
                 ClientEntity client = new ClientEntity(userClient.getClientName(), userClient.getClientEmail());
                 user = this.mapToUserEntity(userClient, clientService.save(client));
             } else {
-                ClientEntity client = clientService.findByName(userClient.getName());
+                ClientEntity client = clientService.findByName(userClient.getClientName());
                 user = this.mapToUserEntity(userClient, client);
             }
         } else {
