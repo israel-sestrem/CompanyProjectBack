@@ -32,6 +32,13 @@ Rotas:
     - localhost:8080/clients/{id}          (GET)    - trazer client
     - localhost:8080/clients               (GET)    - trazer todos os clients
     -
+    - Faq
+    - localhost:8080/faq                   (POST)   - salvar faq
+    - localhost:8080/faq/{id}              (PUT)    - atualizar faq
+    - localhost:8080/faq/{id}              (DELETE) - deletar faq
+    - localhost:8080/faq/{id}              (GET)    - trazer faq
+    - localhost:8080/faq                   (GET)    - trazer todas faqs
+    -
     - Users
     - localhost:8080/users/login           (POST)   - validar se login do user está correto
     - localhost:8080/users                 (POST)   - salvar user
