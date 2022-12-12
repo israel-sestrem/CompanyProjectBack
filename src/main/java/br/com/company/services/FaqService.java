@@ -40,4 +40,14 @@ public class FaqService {
         faqRepository.deleteById(id);
     }
 
+    public FaqEntity checkNullFields(FaqEntity faqEntity, FaqEntity newFaq) {
+        if(newFaq.getQuestion() != null){
+            faqEntity.setQuestion(newFaq.getQuestion());
+        }
+        if(newFaq.getAnswer() != null){
+            faqEntity.setAnswer(newFaq.getAnswer());
+        }
+
+        return faqEntity;
+    }
 }
